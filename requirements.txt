@@ -1,0 +1,18 @@
+Flask==3.0.3
+flask-cors==4.0.1
+moviepy==1.0.3
+imageio-ffmpeg>=0.4.2
+gTTS==2.5.1
+opencv-python==4.9.0.80
+pillow==10.3.0
+google-genai>=1.0.0
+requests==2.31.0
+python-dotenv==1.0.1
+numpy==1.26.4
+
+# Optional: gives the safety filter a more accurate face-detection backend
+# (mp.solutions-style tutorials you may have seen elsewhere are deprecated;
+# this project uses the current MediaPipe Tasks API). If this fails to
+# install on your platform/Python version, just delete this line — the app
+# automatically falls back to the built-in OpenCV detector.
+mediapipe>=0.10.14

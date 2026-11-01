@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halal Cartoon Factory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <header class="bg-slate-800 border-b border-slate-700 py-4 sm:py-6 px-4">
+        <div class="max-w-4xl mx-auto flex flex-wrap items-center justify-between gap-y-2 gap-x-3">
+            <div class="flex items-center space-x-3 min-w-0">
+                <i class="fa-solid fa-video text-emerald-400 text-2xl shrink-0"></i>
+                <h1 class="text-lg sm:text-2xl font-bold tracking-wide text-white truncate">Halal Cartoon Factory</h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full font-medium whitespace-nowrap">Shariah Compliant Engine</span>
+                <button type="button" id="settingsToggle" title="API কী সেটিংস" class="h-8 w-8 flex items-center justify-center rounded-full bg-slate-700 hover:bg-slate-600 text-slate-200 border border-slate-600 transition">
+                    <i class="fa-solid fa-key text-sm"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-4xl w-full mx-auto p-4 sm:p-6 my-auto">
+
+        <!-- ===================== API Key সেটিংস প্যানেল ===================== -->
+        <div id="settingsPanel" class="hidden mb-4 bg-slate-800 border border-slate-700 rounded-xl p-5 shadow-2xl">
+            <div class="flex items-center justify-between mb-1">
+                <h2 class="text-base sm:text-lg font-semibold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-key text-emerald-400"></i> API কী সেটিংস
+                </h2>
+                <button type="button" id="settingsClose" class="text-slate-400 hover:text-white px-2" aria-label="বন্ধ করুন">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <p class="text-slate-400 text-xs mb-4">কোনো কোড/ফাইল এডিট না করেই এখানে সরাসরি আপনার নিজের API কী বসান। এই কী শুধু আপনার এই ব্রাউজারে (localStorage) সেভ থাকবে এবং শুধু ভিডিও বানানোর সময় সার্ভারে পাঠানো হবে — নিজের ডিভাইস ছাড়া অন্য কারো সাথে এই পেজ/ব্রাউজার শেয়ার করবেন না।</p>
+
+            <div class="space-y-4">
+                <div>
+                    <label for="geminiKeyInput" class="block text-sm font-medium text-slate-300 mb-1">Gemini API Key <span class="text-slate-500">(স্ক্রিপ্ট লেখার জন্য আবশ্যক — না দিলে বেসিক ফলব্যাক স্ক্রিপ্ট ব্যবহার হবে)</span></label>
+                    <div class="flex gap-2">
+                        <input type="password" id="geminiKeyInput" autocomplete="off" placeholder="AIza..." class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <button type="button" data-toggle-for="geminiKeyInput" class="toggle-key-visibility shrink-0 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg px-3" aria-label="কী দেখান/লুকান"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                    <a href="https://aistudio.google.com/apikey" target="_blank" class="text-xs text-emerald-400 hover:underline">ফ্রি Gemini কী নিন →</a>
+                </div>
+
+                <div>
+                    <label for="hfKeyInput" class="block text-sm font-medium text-slate-300 mb-1">Hugging Face Token <span class="text-slate-500">(ঐচ্ছিক — আসল AI ছবির জন্য, না দিলে প্লেসহোল্ডার ছবি হবে)</span></label>
+                    <div class="flex gap-2">
+                        <input type="password" id="hfKeyInput" autocomplete="off" placeholder="hf_..." class="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <button type="button" data-toggle-for="hfKeyInput" class="toggle-key-visibility shrink-0 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg px-3" aria-label="কী দেখান/লুকান"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                    <a href="https://huggingface.co/settings/tokens" target="_blank" class="text-xs text-emerald-400 hover:underline">ফ্রি Hugging Face টোকেন নিন →</a>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3 pt-1">
+                    <button type="button" id="saveKeysBtn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2 px-5 rounded-lg transition text-sm">
+                        <i class="fa-solid fa-floppy-disk mr-1"></i> সেভ করুন
+                    </button>
+                    <button type="button" id="clearKeysBtn" class="bg-slate-700 hover:bg-red-600/80 text-slate-200 font-medium py-2 px-5 rounded-lg transition text-sm">
+                        মুছে ফেলুন
+                    </button>
+                    <span id="keySaveStatus" class="text-xs text-emerald-400"></span>
+                </div>
+            </div>
+        </div>
+        <!-- =================== /API Key সেটিংস প্যানেল =================== -->
+
+        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-2xl">
+            <h2 class="text-xl font-semibold mb-2 text-white">Generate a Shariah-Compliant Animated Story</h2>
+            <p class="text-slate-400 text-sm mb-6">Automated script writing, voiceover, scene art, and a face-safety pass, with zero background music — start to finished .mp4.</p>
+
+            <form id="renderForm" class="space-y-6">
+                <div>
+                    <label for="topic" class="block text-sm font-medium text-slate-300 mb-2">Islamic Story Topic / Theme</label>
+                    <textarea id="topic" rows="4" maxlength="500" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="e.g., A lesson on kindness to neighbors in an Islamic household..." required></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="aspect_ratio" class="block text-sm font-medium text-slate-300 mb-2">Video Format</label>
+                        <select id="aspect_ratio" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="9:16">Shorts / Reels (9:16 — 1080×1920)</option>
+                            <option value="16:9" selected>Standard / YouTube (16:9 — 1920×1080)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="language" class="block text-sm font-medium text-slate-300 mb-2">Voice Language</label>
+                        <select id="language" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            <option value="en" selected>English</option>
+                            <option value="bn">Bengali (বাংলা)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-6 rounded-lg transition duration-200 flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/20">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>Generate Cartoon Video</span>
+                </button>
+            </form>
+
+            <div id="loader" class="hidden mt-8 text-center py-6 border-t border-slate-700">
+                <div class="inline-block animate-spin rounded-full h-10 w-10 border-4 border-emerald-500 border-t-transparent mb-4"></div>
+                <p id="statusText" class="text-emerald-400 font-medium">Generating script, voiceovers, and visuals...</p>
+                <p class="text-slate-500 text-xs mt-1">This usually takes one to a few minutes, depending on the number of scenes and image-model load. Please keep this tab open.</p>
+            </div>
+
+            <div id="resultBox" class="hidden mt-8 p-6 bg-slate-900/80 border border-emerald-500/30 rounded-lg text-center">
+                <i class="fa-solid fa-circle-check text-emerald-400 text-4xl mb-3"></i>
+                <h3 class="text-lg font-bold text-white mb-2">Video Successfully Generated!</h3>
+                <p class="text-slate-400 text-sm mb-4">Your Shariah-compliant cartoon video is ready for download.</p>
+                <a id="downloadBtn" href="#" target="_blank" class="inline-flex items-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 px-6 rounded-lg transition">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Download Final Video (.mp4)</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-800 border-t border-slate-700 py-4 text-center text-xs text-slate-500">
+        Halal Cartoon Factory Engine &copy; 2026 — Automated Shariah-Compliant Video Generation.
+    </footer>
+
+    <script src="/frontend_ui/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "shariah_constraints": {
+    "adult_characters": {
+      "framing": "Focus exclusively on hands, torso, lower body, or back view. Crop and frame out heads, faces, and eyes completely (Tom and Jerry style framing).",
+      "negative_prompts": "adult face, eyes, full head, face features, headshot, front portrait"
+    },
+    "child_characters": {
+      "facial_rule": "The facial area must feature a blank soft glowing white light surface or blur effect, completely concealing eyes, nose, and mouth features.",
+      "negative_prompts": "detailed child eyes, mouth, nose, detailed facial features"
+    },
+    "audio": {
+      "music_allowed": false,
+      "audio_type": "Pure vocal voiceover and natural ambient sounds only. Strictly zero background music or musical instruments."
+    }
+  },
+  "global_negative_prompts": "face, eyes, detailed face, portrait, realistic head, music, background instrumentals, musical notes, idol, statue"
+}
